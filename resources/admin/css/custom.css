@@ -1,0 +1,8 @@
+.login__error {
+    margin: 1rem 0;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    color: red;
+}
