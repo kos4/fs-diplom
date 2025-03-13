@@ -1,5 +1,5 @@
 @extends('admin.layouts.default')
 
 @section('content')
-    <a href="{{ route('logout') }}">Выход</a>
+    @include('admin.includes.halls.hallIndex')
 @endsection

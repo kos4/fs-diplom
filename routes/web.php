@@ -13,5 +13,9 @@ Route::prefix('admin')->group(function () {
 
     Route::group(['middleware' => 'admin'], function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+
+        Route::resource('/api/halls', App\Http\Controllers\HallController::class)->except([
+            'index', 'show'
+        ]);
     });
 });

@@ -11,7 +11,7 @@
     @include('admin.includes.header');
 </header>
 
-<main>
+<main class="@isset($cssClass) {{$cssClass}} @endisset">
     @yield('content')
 </main>
 

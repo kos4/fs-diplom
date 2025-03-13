@@ -16,7 +16,7 @@ class LoginController extends Controller
         }
 
         return view('admin.pages.login', [
-            'pageTitle' => 'Авторизация | ' . config('APP_NAME'),
+            'pageTitle' => 'Авторизация | ' . config('app.name'),
         ]);
     }
 
