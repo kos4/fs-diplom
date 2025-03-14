@@ -12,9 +12,4 @@ class PlaceType extends Model
         'code',
         'position',
     ];
-
-    public function places(): HasMany
-    {
-        return $this->hasMany(Place::class);
-    }
 }

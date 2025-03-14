@@ -2,4 +2,5 @@
 
 @section('content')
     @include('admin.includes.halls.hallIndex')
+    @include('admin.includes.configHall.configHallIndex')
 @endsection

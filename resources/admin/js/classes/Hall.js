@@ -49,7 +49,7 @@ export default class Hall {
                 body: response.form,
             });
 
-            const form = this.popup.container.querySelector('form');
+            const form = this.popup.elPopup.querySelector('form');
 
             if (form) {
                 form.addEventListener('submit', this.submitForm);
@@ -78,8 +78,7 @@ export default class Hall {
             const hallList = this.container.querySelector('.js-hall-list');
 
             if (hallList) {
-                hallList.innerHTML = response.list;
-                this.initEventItems();
+                location.reload();
             }
         } else {
             this.popup.render({
@@ -106,8 +105,7 @@ export default class Hall {
             const hallList = this.container.querySelector('.js-hall-list');
 
             if (hallList) {
-                hallList.innerHTML = response.list;
-                this.initEventItems();
+                location.reload();
             }
         } else {
             this.popup.render({

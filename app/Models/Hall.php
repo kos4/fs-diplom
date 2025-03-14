@@ -11,10 +11,12 @@ class Hall extends Model
         'name',
         'is_active',
         'position',
+        'rows',
+        'places',
+        'config',
     ];
 
-    public function places(): HasMany
-    {
-        return $this->hasMany(Place::class);
-    }
+    protected $casts = [
+        'config' => 'array',
+    ];
 }

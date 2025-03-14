@@ -49,4 +49,17 @@ export default class Entity {
             callback,
         });
     }
+
+    getHall(id, callback) {
+        createRequest({
+            input: 'halls/' + id,
+            init: {
+                method: "GET",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+            },
+            callback,
+        });
+    }
 }

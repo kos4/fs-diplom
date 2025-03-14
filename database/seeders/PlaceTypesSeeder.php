@@ -15,7 +15,7 @@ class PlaceTypesSeeder extends Seeder
         DB::table('place_types')->insert([
             [
                 'name' => 'Заблокированные (нет кресла)',
-                'code' => 'block',
+                'code' => 'disabled',
                 'position' => 30,
             ],
             [

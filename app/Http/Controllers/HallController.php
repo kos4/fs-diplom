@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\HallRequest;
 use App\Models\Hall;
+use App\Models\PlaceType;
 
 class HallController extends Controller
 {
@@ -39,6 +40,27 @@ class HallController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(Hall $hall)
+    {
+        if ($hall->exists) {
+            return response()->json([
+                'success' => true,
+                'hall' => view('admin.includes.configHall.configHall', [
+                    'hall' => $hall,
+                    'placeTypes' => PlaceType::all()->sortBy("position"),
+                ])->render(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Элемент не найден.',
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Hall $hall)
@@ -54,12 +76,22 @@ class HallController extends Controller
      */
     public function update(HallRequest $request, Hall $hall)
     {
+        $request->merge(['config' => json_decode($request->input('config'), true)]);
         $hall->update($request->all());
-
-        return response()->json([
+        $json = [
             'success' => true,
-            'list' => view('admin.includes.halls.hallList', ['halls' => Hall::all()->sortBy("position")])->render(),
-        ]);
+        ];
+
+        if ($request->input('getConfig')) {
+            $json['hall'] = view('admin.includes.configHall.configHall', [
+                'hall' => Hall::find($hall->id),
+                'placeTypes' => PlaceType::all()->sortBy("position"),
+            ])->render();
+        } else {
+            $json['list'] = view('admin.includes.halls.hallList', ['halls' => Hall::all()->sortBy("position")])->render();
+        }
+
+        return response()->json($json);
     }
 
     /**

@@ -3,6 +3,7 @@ import './assets/css/style.css';
 export default class Popup {
     constructor() {
         this.container = document.querySelector("body");
+        this.elPopup = null;
     }
 
     render(data, confirm = false, callback = () => {}) {
@@ -11,13 +12,13 @@ export default class Popup {
         this.removePopup();
         this.container.insertAdjacentHTML("beforeend", markup);
 
-        const elPopup = this.container.querySelector(".popup");
-        const close = elPopup.querySelectorAll(".js-popup-close");
-        const popupWindow = elPopup.querySelector(".popup__content");
-        const btnConfirm = elPopup.querySelector('.js-confirm');
+        this.elPopup = this.container.querySelector(".popup");
+        const close = this.elPopup.querySelectorAll(".js-popup-close");
+        const popupWindow = this.elPopup.querySelector(".popup__content");
+        const btnConfirm = this.elPopup.querySelector('.js-confirm');
 
         popupWindow.addEventListener("click", (event) => event.stopPropagation());
-        elPopup.addEventListener("click", this.closePopup.bind(this));
+        this.elPopup.addEventListener("click", this.closePopup.bind(this));
 
         if (close.length) {
             close.forEach(item => {
@@ -71,7 +72,7 @@ export default class Popup {
 
     markupConfirm(data) {
         data.body = `
-            <p>${data.body}</p>
+            ${data.body}
             <div class="conf-step__buttons text-center">
                 <input type="button" value="Да" class="conf-step__button conf-step__button-accent js-confirm">
                 <button class="conf-step__button conf-step__button-regular js-popup-close" type="button">Отменить</button>
