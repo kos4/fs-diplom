@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HallRequest;
 use App\Models\Hall;
 use App\Models\PlaceType;
+use Illuminate\Http\Request;
 
 class HallController extends Controller
 {
@@ -45,6 +46,17 @@ class HallController extends Controller
     public function show(Hall $hall)
     {
         if ($hall->exists) {
+            if (request()->query('from') === 'prices') {
+                return response()->json([
+                    'success' => true,
+                    'hall' => view('admin.includes.pricesHall.pricesHall', [
+                        'hall' => $hall,
+                        'placeTypes' => PlaceType::all()->sortBy("position"),
+                        'prices' => $hall->prices,
+                    ])->render(),
+                ]);
+            }
+
             return response()->json([
                 'success' => true,
                 'hall' => view('admin.includes.configHall.configHall', [

@@ -19,4 +19,9 @@ class Hall extends Model
     protected $casts = [
         'config' => 'array',
     ];
+
+    public function prices(): HasMany
+    {
+        return $this->hasMany(Price::class);
+    }
 }

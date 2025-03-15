@@ -50,16 +50,43 @@ export default class Entity {
         });
     }
 
-    getHall(id, callback) {
+    getHall(id, from, callback) {
         createRequest({
-            input: 'halls/' + id,
+            input: 'halls/' + id + '?from=' + from,
             init: {
                 method: "GET",
                 headers: {
                     "X-CSRF-Token": this.csrfToken,
-                },
+                }
             },
             callback,
+        });
+    }
+
+    savePrices(data, callback) {
+        data.prices.forEach(item => {
+            const input = "prices" + (item.id ? '/' + item.id : '');
+            const formData = new FormData();
+
+            if (item.id) {
+                formData.append('_method', 'PUT');
+            }
+
+            formData.append('hall_id', data.hall_id);
+            formData.append('type_id', item.type_id);
+            formData.append('price', item.price);
+
+            createRequest({
+                input,
+                init: {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-Token": this.csrfToken,
+                    },
+                    body: formData,
+                },
+                callback,
+            });
         });
     }
 }

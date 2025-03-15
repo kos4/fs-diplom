@@ -15,5 +15,6 @@ Route::prefix('admin')->group(function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
         Route::resource('/api/halls', App\Http\Controllers\HallController::class);
+        Route::resource('/api/prices', App\Http\Controllers\PriceController::class);
     });
 });

@@ -1,9 +1,11 @@
 import './libs/accordeon';
 import Hall from './classes/Hall.js';
 import ConfigHall from "./classes/ConfigHall.js";
+import PricesHall from "./classes/PricesHall.js";
 
 const hallContainer = document.querySelector('.js-hall');
 const configHallContainer = document.querySelector('.js-config-hall');
+const pricesHallContainer = document.querySelector('.js-prices-hall');
 
 if (hallContainer) {
     const hall = new Hall(hallContainer);
@@ -15,4 +17,10 @@ if (configHallContainer) {
     const configHall = new ConfigHall(configHallContainer);
 
     configHall.init();
+}
+
+if (pricesHallContainer) {
+    const pricesHall = new PricesHall(pricesHallContainer);
+
+    pricesHall.init();
 }

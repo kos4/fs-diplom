@@ -52,7 +52,7 @@ export default class ConfigHall {
         const element = event.target;
         const id = element.value;
 
-        this.entity.getHall(id, this.onChangeHall.bind(this));
+        this.entity.getHall(id, 'config', this.onChangeHall.bind(this));
     }
 
     onChangeHall(response) {
