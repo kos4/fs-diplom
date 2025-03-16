@@ -5,7 +5,7 @@ export default class Entity {
         this.csrfToken = document.head.querySelector("[name~=csrf_token][content]").content;
     }
 
-    loadFromHall(input, callback) {
+    loadFormHall(input, callback) {
         createRequest({
             input: "halls/" + input,
             init: {
@@ -87,6 +87,51 @@ export default class Entity {
                 },
                 callback,
             });
+        });
+    }
+
+    loadFormMovie(input, callback) {
+        createRequest({
+            input: "movies/" + input,
+            init: {
+                method: "GET",
+            },
+            callback,
+        });
+    }
+
+    saveMovie(data, callback) {
+        const id = data.has('id') ? data.get('id') : null;
+        const input = "movies" + (id ? '/' + id : '');
+
+        createRequest({
+            input,
+            init: {
+                method: "POST",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: data,
+            },
+            callback,
+        });
+    }
+
+    deleteMovie(id, callback) {
+        const formData = new FormData();
+
+        formData.append('_method', 'DELETE');
+
+        createRequest({
+            input: 'movies/' + id,
+            init: {
+                method: "POST",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: formData,
+            },
+            callback,
         });
     }
 }

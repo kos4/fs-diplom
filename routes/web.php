@@ -14,7 +14,8 @@ Route::prefix('admin')->group(function () {
     Route::group(['middleware' => 'admin'], function () {
         Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 
-        Route::resource('/api/halls', App\Http\Controllers\HallController::class);
-        Route::resource('/api/prices', App\Http\Controllers\PriceController::class);
+        Route::resource('/api/halls', App\Http\Controllers\HallController::class)->except(['index']);
+        Route::resource('/api/prices', App\Http\Controllers\PriceController::class)->only(['store', 'update']);
+        Route::resource('/api/movies', App\Http\Controllers\MovieController::class)->except(['index', 'show']);
     });
 });

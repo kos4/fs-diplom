@@ -6,10 +6,6 @@ export default class Hall {
         this.container = container;
         this.entity = new Entity();
         this.popup = new Popup();
-
-        this.getForm = this.getForm.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-        this.deleteItem = this.deleteItem.bind(this);
     }
 
     init() {
@@ -39,7 +35,7 @@ export default class Hall {
     getForm(id = null) {
         const input = id ? id + '/edit' : 'create';
 
-        this.entity.loadFromHall(input, this.onShowForm.bind(this, id));
+        this.entity.loadFormHall(input, this.onShowForm.bind(this, id));
     }
 
     onShowForm(id, response) {
@@ -52,7 +48,7 @@ export default class Hall {
             const form = this.popup.elPopup.querySelector('form');
 
             if (form) {
-                form.addEventListener('submit', this.submitForm);
+                form.addEventListener('submit', this.submitForm.bind(this));
             }
         } else {
             this.popup.render({

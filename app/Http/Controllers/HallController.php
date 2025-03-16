@@ -10,6 +10,14 @@ use Illuminate\Http\Request;
 class HallController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -88,7 +96,10 @@ class HallController extends Controller
      */
     public function update(HallRequest $request, Hall $hall)
     {
-        $request->merge(['config' => json_decode($request->input('config'), true)]);
+        if ($request->has('config')) {
+            $request->merge(['config' => json_decode($request->input('config'), true)]);
+        }
+
         $hall->update($request->all());
         $json = [
             'success' => true,
