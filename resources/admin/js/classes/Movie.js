@@ -1,11 +1,13 @@
 import Entity from "./Entity.js";
 import Popup from "../components/popup/Popup.js";
+import MovieSession from "./MovieSession.js";
 
 export default class Movie {
     constructor(container) {
         this.container = container;
         this.entity = new Entity();
         this.popup = new Popup();
+        this.movieSession = new MovieSession(this.container);
     }
 
     init() {
@@ -16,6 +18,7 @@ export default class Movie {
         }
 
         this.initEventMovie();
+        this.movieSession.init();
     }
 
     getForm(id = null) {
@@ -81,12 +84,22 @@ export default class Movie {
 
         if (movies.length) {
             movies.forEach(item => {
+                const btnDelete = item.querySelector('.conf-step__button-trash');
+
+                if (btnDelete) {
+                    btnDelete.addEventListener('click', this.deleteItem.bind(this, item.dataset.id));
+                }
+
                 item.addEventListener('click', this.getForm.bind(this, item.dataset.id));
+                item.addEventListener('dragstart', this.beginDnd.bind(this, item));
+                item.addEventListener('dragend', this.endDnd.bind(this, item));
             });
         }
     }
 
-    deleteItem(id) {
+    deleteItem(id, event) {
+        event.stopPropagation();
+
         this.popup.render(
             {
                 body: 'Удалить элемент?',
@@ -105,16 +118,34 @@ export default class Movie {
 
         if (response.success) {
             const movieList = this.container.querySelector('.js-movie-list');
+            const movieSessionHalls = this.container.querySelector('.js-movie-session-halls');
 
             if (movieList) {
                 movieList.innerHTML = response.list;
                 this.initEventMovie();
+            }
+
+            if (movieSessionHalls) {
+                movieSessionHalls.innerHTML = response.halls;
+                this.movieSession.init();
             }
         } else {
             this.popup.render({
                 title: 'Ошибка',
                 body: response.message,
             });
+        }
+    }
+
+    beginDnd(item, event) {
+        event.dataTransfer.setData("text/plain", item);
+    }
+
+    endDnd(item, event) {
+        const hall = document.elementFromPoint(event.clientX, event.clientY);
+
+        if (hall.closest('.conf-step__seances-timeline')) {
+            this.movieSession.getForm(hall.dataset.id, item.dataset.id);
         }
     }
 }

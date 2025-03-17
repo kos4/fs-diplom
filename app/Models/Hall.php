@@ -24,4 +24,9 @@ class Hall extends Model
     {
         return $this->hasMany(Price::class);
     }
+
+    public function movieSessions(): HasMany
+    {
+        return $this->hasMany(MovieSession::class);
+    }
 }

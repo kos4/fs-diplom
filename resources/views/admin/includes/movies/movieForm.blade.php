@@ -3,10 +3,12 @@
 @endisset
 <form action="" method="post" enctype="multipart/form-data">
     @csrf
+
     @isset($movie)
         @method('PUT')
         <input type="hidden" name="id" value="{{ $movie->id }}">
     @endisset
+
     <label class="conf-step__label conf-step__label-fullsize" for="title">
         Название фильма
         <input class="conf-step__input" type="text" placeholder="Например, &laquo;Гражданин Кейн&raquo;" name="title" required value="{{ isset($movie) ? $movie->title : '' }}">

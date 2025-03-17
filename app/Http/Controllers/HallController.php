@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\HallRequest;
 use App\Models\Hall;
 use App\Models\PlaceType;
-use Illuminate\Http\Request;
 
 class HallController extends Controller
 {

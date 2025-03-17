@@ -17,5 +17,6 @@ Route::prefix('admin')->group(function () {
         Route::resource('/api/halls', App\Http\Controllers\HallController::class)->except(['index']);
         Route::resource('/api/prices', App\Http\Controllers\PriceController::class)->only(['store', 'update']);
         Route::resource('/api/movies', App\Http\Controllers\MovieController::class)->except(['index', 'show']);
+        Route::resource('/api/movie-sessions', App\Http\Controllers\MovieSessionController::class)/*->except(['index', 'show'])*/;
     });
 });

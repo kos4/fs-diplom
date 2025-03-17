@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class Movie extends Model
@@ -22,5 +23,10 @@ class Movie extends Model
         return Attribute::make(
             get: fn () => Storage::disk('public')->url('posters/' . $this->poster),
         );
+    }
+
+    public function movieSessions(): HasMany
+    {
+        return $this->hasMany(MovieSession::class);
     }
 }

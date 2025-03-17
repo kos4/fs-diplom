@@ -34,3 +34,25 @@
     transition-duration: .5s;
     transition-timing-function: ease;
 }
+
+.conf-step__movies .conf-step__movie {
+    padding-bottom: 30px;
+}
+
+.conf-step__movies .conf-step__movie .conf-step__button.conf-step__button-trash {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.conf-step__movies .conf-step__movie .conf-step__button.conf-step__button-trash:active {
+    top:unset;
+}
+
+.conf-step__seances-movie {
+    cursor: pointer;
+}
+
+.conf-step__seances-movie-trash-hide {
+    display: none;
+}

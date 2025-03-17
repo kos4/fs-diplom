@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MovieRequest;
+use App\Models\Hall;
 use App\Models\Movie;
 use Illuminate\Support\Facades\Storage;
 
@@ -90,6 +91,7 @@ class MovieController extends Controller
         return response()->json([
             'success' => true,
             'list' => view('admin.includes.movies.movieList', ['movies' => Movie::all()->sortBy("position")])->render(),
+            'halls' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
         ]);
     }
 

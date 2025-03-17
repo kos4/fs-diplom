@@ -134,4 +134,49 @@ export default class Entity {
             callback,
         });
     }
+
+    loadFormMovieSession(input, callback) {
+        createRequest({
+            input: "movie-sessions/" + input,
+            init: {
+                method: "GET",
+            },
+            callback,
+        });
+    }
+
+    saveMovieSession(data, callback) {
+        const id = data.has('id') ? data.get('id') : null;
+        const input = "movie-sessions" + (id ? '/' + id : '');
+
+        createRequest({
+            input,
+            init: {
+                method: "POST",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: data,
+            },
+            callback,
+        });
+    }
+
+    deleteMovieSession(id, callback) {
+        const formData = new FormData();
+
+        formData.append('_method', 'DELETE');
+
+        createRequest({
+            input: 'movie-sessions/' + id,
+            init: {
+                method: "POST",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: formData,
+            },
+            callback,
+        });
+    }
 }

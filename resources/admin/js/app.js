@@ -7,7 +7,7 @@ import Movie from "./classes/Movie.js";
 const hallContainer = document.querySelector('.js-hall');
 const configHallContainer = document.querySelector('.js-config-hall');
 const pricesHallContainer = document.querySelector('.js-prices-hall');
-const sessionsMoviesContainer = document.querySelector('.js-sessions-movies');
+const movieSessionContainer = document.querySelector('.js-sessions-movies');
 
 if (hallContainer) {
     const hall = new Hall(hallContainer);
@@ -27,8 +27,8 @@ if (pricesHallContainer) {
     pricesHall.init();
 }
 
-if (sessionsMoviesContainer) {
-    const movie = new Movie(sessionsMoviesContainer);
+if (movieSessionContainer) {
+    const movie = new Movie(movieSessionContainer);
 
     movie.init();
 }

@@ -23,7 +23,7 @@ return new class extends Migration {
             )
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->timestamp('datetime');
+            $table->time('movie_session_time');
         });
     }
 

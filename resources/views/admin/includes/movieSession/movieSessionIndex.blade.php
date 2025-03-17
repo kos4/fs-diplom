@@ -10,13 +10,8 @@
             @include('admin.includes.movies.movieList')
         </div>
 
-        <div class="conf-step__seances">
-            @include('admin.includes.sessionsMovies.sessionsMoviesHalls')
+        <div class="conf-step__seances js-movie-session-halls">
+            @include('admin.includes.movieSession.movieSessionHalls')
         </div>
-
-        <fieldset class="conf-step__buttons text-center">
-            <button class="conf-step__button conf-step__button-regular">Отмена</button>
-            <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
-        </fieldset>
     </div>
 </section>
