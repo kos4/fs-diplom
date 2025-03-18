@@ -6,6 +6,8 @@ use App\Http\Requests\MovieSessionRequest;
 use App\Models\Hall;
 use App\Models\Movie;
 use App\Models\MovieSession;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MovieSessionController extends Controller
 {
@@ -38,19 +40,25 @@ class MovieSessionController extends Controller
      */
     public function store(MovieSessionRequest $request)
     {
-        $movieSession = MovieSession::create($request->all());
+        $check = $this->checkMovieSession($request->input('hall_id'), $request->input('movie_id'), $request->input('movie_session_time'));
 
-        if ($movieSession->id) {
+        if ($check['success']) {
+            $movieSession = MovieSession::create($request->all());
+
+            if ($movieSession->id) {
+                return response()->json([
+                    'success' => true,
+                    'list' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
+                ]);
+            }
+
             return response()->json([
-                'success' => true,
-                'list' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
+                'success' => false,
+                'message' => 'Ошибка сохранения данных.',
             ]);
         }
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Ошибка сохранения данных.',
-        ]);
+        return response()->json($check);
     }
 
     /**
@@ -83,12 +91,18 @@ class MovieSessionController extends Controller
      */
     public function update(MovieSessionRequest $request, MovieSession $movieSession)
     {
-        $movieSession->update($request->all());
+        $check = $this->checkMovieSession($request->input('hall_id'), $request->input('movie_id'), $request->input('movie_session_time'));
 
-        return response()->json([
-            'success' => true,
-            'list' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
-        ]);
+        if ($check['success']) {
+            $movieSession->update($request->all());
+
+            return response()->json([
+                'success' => true,
+                'list' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
+            ]);
+        }
+
+        return response()->json($check);
     }
 
     /**
@@ -102,5 +116,52 @@ class MovieSessionController extends Controller
             'success' => true,
             'list' => view('admin.includes.movieSession.movieSessionHalls', ['halls' => Hall::all()->sortBy("position")])->render(),
         ]);
+    }
+
+    private function checkMovieSession($hall_id, $movie_id, $movie_session_time)
+    {
+        $result = [
+            'success' => true,
+            'message' => "",
+        ];
+        $movie = Movie::find($movie_id);
+
+        $prevMovie = DB::table('movie_sessions as ms')
+            ->leftJoin('movies as m', 'm.id', '=', 'ms.movie_id')
+            ->select('m.runtime as runtime', 'ms.movie_session_time as movie_session_time')
+            ->where('ms.hall_id', '=', $hall_id)
+            ->where('ms.movie_session_time', '<=', $movie_session_time)
+            ->orderBy('ms.movie_session_time', 'desc')
+            ->limit(1)
+            ->get()->first();
+
+        if ($prevMovie) {
+            $prevTime = Carbon::parse($prevMovie->movie_session_time)->addMinutes($prevMovie->runtime);
+            $startTime = Carbon::parse($movie_session_time);
+
+            if ($prevTime > $startTime) {
+                $result['success'] = false;
+                $result['message'] = 'Добавляемый сеанс накладывается на предыдущий.<br>';
+            }
+        }
+
+        $nextMovie = DB::table('movie_sessions')
+            ->where('hall_id', '=', $hall_id)
+            ->where('movie_session_time', '>=', $movie_session_time)
+            ->orderBy('movie_session_time')
+            ->limit(1)
+            ->get()->first();
+
+        if ($nextMovie) {
+            $nextTime = Carbon::parse($nextMovie->movie_session_time);
+            $endTime = Carbon::parse($movie_session_time)->addMinutes($movie->runtime);
+
+            if ($endTime > $nextTime) {
+                $result['success'] = false;
+                $result['message'] .= 'Добавляемый сеанс накладывается на следующий сеанс.<br>';
+            }
+        }
+
+        return $result;
     }
 }
