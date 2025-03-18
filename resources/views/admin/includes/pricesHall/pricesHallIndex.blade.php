@@ -9,7 +9,7 @@
 
             <form action="">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
                 <div class="js-prices-hall">
                     @php
                         $hall = $halls->first();

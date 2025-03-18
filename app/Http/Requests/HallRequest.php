@@ -24,7 +24,6 @@ class HallRequest extends FormRequest
         return [
             'name' => ['nullable', 'string'],
             'position' => ['nullable', 'numeric'],
-            'is_active' => ['nullable', 'boolean'],
             'rows' => ['nullable', 'numeric'],
             'places' => ['nullable', 'numeric'],
             'config' => ['nullable', 'string'],

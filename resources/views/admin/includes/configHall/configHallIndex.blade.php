@@ -9,7 +9,7 @@
 
             <form action="">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
                 <div class="js-config-hall">
                     @include('admin.includes.configHall.configHall', ['hall' => $halls->first()])
                 </div>

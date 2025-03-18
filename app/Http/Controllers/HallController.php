@@ -13,7 +13,10 @@ class HallController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success' => true,
+            'form' => view('admin.includes.openSale.openSaleForm', ['halls' => Hall::all()->sortBy('position')])->render(),
+        ]);
     }
 
     /**

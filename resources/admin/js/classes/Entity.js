@@ -179,4 +179,28 @@ export default class Entity {
             callback,
         });
     }
+
+    loadFormOpenSale(callback) {
+        createRequest({
+            input: "halls",
+            init: {
+                method: "GET",
+            },
+            callback,
+        });
+    }
+
+    openSale(data, callback) {
+        createRequest({
+            input: 'open-sale',
+            init: {
+                method: "POST",
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: data,
+            },
+            callback,
+        });
+    }
 }

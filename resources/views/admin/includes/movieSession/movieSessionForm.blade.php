@@ -2,7 +2,7 @@
     @csrf
 
     @isset($movieSession)
-        @method('PUT')
+        @method('PATCH')
         <input type="hidden" name="id" value="{{ $movieSession->id }}">
     @endisset
 
