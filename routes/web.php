@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
+Route::controller(SiteController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/hall/{movieSessionId}', 'hall')->name('hall');
+});
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', [App\Http\Controllers\LoginController::class, 'index']);

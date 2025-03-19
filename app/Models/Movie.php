@@ -29,4 +29,13 @@ class Movie extends Model
     {
         return $this->hasMany(MovieSession::class);
     }
+
+    public function gatHalls() {
+        return Hall::whereIn('id', $this->movieSessions()->groupBy('hall_id')->pluck('hall_id')->toArray())->where('is_active', true)->get();
+    }
+
+    public function getMovieSessions($hallId)
+    {
+        return $this->movieSessions()->where('hall_id', $hallId)->get();
+    }
 }
