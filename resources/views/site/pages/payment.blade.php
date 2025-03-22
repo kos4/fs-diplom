@@ -1,5 +1,5 @@
 @extends('site.layouts.default')
 
 @section('content')
-    @include('site.includes.hall.indexHall')
+    @include('site.includes.payment.indexPayment')
 @endsection

@@ -20,7 +20,7 @@ class PlaceTypesSeeder extends Seeder
             ],
             [
                 'name' => 'Обычные кресла',
-                'code' => 'standard',
+                'code' => 'standart',
                 'position' => 10,
             ],
             [

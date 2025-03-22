@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('movie_session_id')->constrained(
+                table: 'movie_sessions', indexName: 'orders_movie_session_id'
+            );
+            $table->date('date');
             $table->boolean('is_paid')->default(false);
-            $table->string('qr_code');
+            $table->string('qr_code')->nullable();
         });
     }
 

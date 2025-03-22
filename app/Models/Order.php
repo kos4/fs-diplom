@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PlaceType extends Model
+class Order extends Model
 {
     protected $fillable = [
-        'name',
-        'code',
-        'position',
+        'movie_session_id',
+        'date',
+        'is_paid',
+        'qr_code',
     ];
 
-    public function prices(): HasMany
+    public function movieSession(): BelongsTo
     {
-        return $this->hasMany(Price::class);
+        return $this->belongsTo(MovieSession::class);
     }
 
     public function basketItems(): HasMany

@@ -38,4 +38,21 @@ export default class Entity {
             callback,
         });
     }
+
+    saveOrder(order, callback) {
+        const formData = new FormData();
+
+        formData.append('order', order);
+        createRequest({
+            input: '/save-order',
+            init: {
+                method: 'POST',
+                headers: {
+                    "X-CSRF-Token": this.csrfToken,
+                },
+                body: formData,
+            },
+            callback,
+        });
+    }
 }

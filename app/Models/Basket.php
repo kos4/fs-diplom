@@ -5,21 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Price extends Model
+class Basket extends Model
 {
     protected $fillable = [
+        'order_id',
+        'place_number',
+        'place_type_id',
         'price',
-        'hall_id',
-        'type_id',
     ];
 
-    public function hall(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Hall::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function placeType(): BelongsTo
     {
-        return $this->belongsTo(PlaceType::class, 'type_id', 'id');
+        return $this->belongsTo(PlaceType::class);
     }
 }

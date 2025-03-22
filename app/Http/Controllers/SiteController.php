@@ -17,8 +17,29 @@ class SiteController extends Controller
         ]);
     }
 
-    public function hall(MovieSession $movieSession)
+    public function hall(string $movieSession_id)
     {
-        return view('site.pages.hall', []);
+        $movieSession = MovieSession::find($movieSession_id);
+
+        return view('site.pages.hall', [
+            'pageTitle' => 'ИдёмВКино',
+            'hall' => $movieSession->hall,
+            'movie' => $movieSession->movie,
+            'movieSession' => $movieSession,
+        ]);
+    }
+
+    public function payment()
+    {
+        return view('site.pages.payment', [
+            'pageTitle' => 'ИдёмВКино',
+        ]);
+    }
+
+    public function ticket()
+    {
+        return view('site.pages.ticket', [
+            'pageTitle' => 'ИдёмВКино',
+        ]);
     }
 }

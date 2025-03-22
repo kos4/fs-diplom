@@ -18,11 +18,9 @@ return new class extends Migration {
             )
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('session_id')->constrained(
-                table: 'movie_sessions', indexName: 'baskets_session_id'
-            );
-            $table->foreignId('place_id')->constrained(
-                table: 'places', indexName: 'baskets_place_id'
+            $table->integer('place_number');
+            $table->foreignId('place_type_id')->constrained(
+                table: 'place_types', indexName: 'place_types_id'
             );
             $table->float('price');
         });
