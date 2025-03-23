@@ -33,6 +33,7 @@ export default class Places {
         }
 
         order.items.push({
+            row: place.parentElement.dataset.rowNumber,
             number: place.dataset.number,
             type: place.dataset.type,
         });

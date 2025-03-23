@@ -2,7 +2,11 @@
     На фильм: <span class="ticket__details ticket__title">{{ $movie->title }}</span>
 </p>
 <p class="ticket__info">
-    Места: <span class="ticket__details ticket__chairs">{{ $places }}</span>
+    Места: <span class="ticket__details ticket__chairs">
+        @foreach($places as $place)
+            {{ $place['place'] }} ({{ $place['row'] }} ряд)@if(!$loop->last),@endif
+        @endforeach
+    </span>
 </p>
 <p class="ticket__info">
     В зале: <span class="ticket__details ticket__hall">{{ $hall->name }}</span>

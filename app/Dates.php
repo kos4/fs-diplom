@@ -60,4 +60,17 @@ class Dates
 
         return $dates;
     }
+
+    public static function getSelectedDate(): Carbon
+    {
+        $request = request();
+
+        if ($request->session()->has('selectedDate')) {
+            $date = Carbon::parse($request->session()->get('selectedDate'))->locale('ru_RU');
+        } else {
+            $date = Carbon::now()->locale('ru_RU');
+        }
+
+        return $date;
+    }
 }

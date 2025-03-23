@@ -7,7 +7,7 @@ use App\Models\Basket;
 use App\Models\MovieSession;
 use App\Models\Order;
 use App\Models\PlaceType;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
@@ -32,7 +32,7 @@ class AjaxController extends Controller
     }
 
     public function saveOrder(Request $request) {
-        $dataDate = Carbon::parse($request->session()->get('selectedDate'))->locale('ru_RU');
+        $dataDate = Dates::getSelectedDate();
         $dataOrder = json_decode($request->input('order'));
 
         if ($dataOrder->items) {
@@ -53,9 +53,13 @@ class AjaxController extends Controller
                 $placeTypeId = $placeTypes->where('code', $item->type)->first()->id;
                 $price = $prices->where('type_id', $placeTypeId)->first()->price;
                 $sum += $price;
-                $places[] = $item->number;
+                $places[] = [
+                    'row' => $item->row,
+                    'place' => $item->number,
+                ];
                 Basket::create([
                     'order_id' => $order->id,
+                    'row_number' => $item->row,
                     'place_number' => $item->number,
                     'place_type_id' => $placeTypeId,
                     'price' => $price,
@@ -69,7 +73,7 @@ class AjaxController extends Controller
                     'movieSession' => $movieSession,
                     'sum' => $sum,
                     'order' => $order,
-                    'places' => implode(', ', $places),
+                    'places' => $places,
                     'date' => $dataDate->isoFormat('D MMMM YYYY г.')
                 ])->render(),
             ]);
