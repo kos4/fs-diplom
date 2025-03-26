@@ -18,9 +18,7 @@ class CheckIsAdmin
         $user = auth()->user();
 
         if (!$user || !$user->is_admin) {
-            return back()->withErrors([
-                'message' => 'У вас нет прав для просмотра данного раздела.',
-            ]);
+            return redirect()->route('auth');
         }
 
         return $next($request);

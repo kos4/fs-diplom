@@ -18,7 +18,7 @@ Route::prefix('ajax')->controller(AjaxController::class)->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/login', [App\Http\Controllers\LoginController::class, 'index']);
+    Route::get('/login', [App\Http\Controllers\LoginController::class, 'index'])->name('auth');
     Route::post('/login', [App\Http\Controllers\LoginController::class, 'login'])->name('login');
     Route::get('/logout', [App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
 
