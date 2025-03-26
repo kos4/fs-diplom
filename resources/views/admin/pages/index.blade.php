@@ -2,7 +2,7 @@
 
 @section('content')
     @include('admin.includes.halls.hallIndex')
-    @if($hall)
+    @if($halls)
         @include('admin.includes.configHall.configHallIndex')
         @include('admin.includes.pricesHall.pricesHallIndex')
         @include('admin.includes.movieSession.movieSessionIndex')
