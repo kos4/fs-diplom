@@ -1,5 +1,6 @@
 import Entity from "./Entity.js";
 import Popup from "../components/popup/Popup.js";
+import md5 from "blueimp-md5";
 
 export default class ConfigHall {
     constructor(container) {
@@ -23,15 +24,22 @@ export default class ConfigHall {
             });
         }
 
-        this.initEventItems();
+        this.initEventItems(form);
     }
 
-    initEventItems() {
+    initEventItems(form) {
         const elPlaces = this.container.querySelectorAll('.js-place');
+        const inputs = form.querySelectorAll('input');
 
         if (elPlaces.length) {
             elPlaces.forEach(item => {
                 item.addEventListener('click', this.changePlaceType.bind(this, item));
+            });
+        }
+
+        if (inputs.length) {
+            inputs.forEach(item => {
+                item.addEventListener('change', this.changeButtons.bind(this));
             });
         }
     }
@@ -47,6 +55,8 @@ export default class ConfigHall {
             item.classList.replace('conf-step__chair_disabled', 'conf-step__chair_standart');
             item.dataset.type = 'standart';
         }
+
+        this.changeButtons();
     }
 
     changeHall(event) {
@@ -101,6 +111,7 @@ export default class ConfigHall {
             });
 
             this.reloadConfigHall(response.hall);
+            this.changeButtons();
         } else {
             this.popup.render({
                 title: 'Ошибка',
@@ -113,14 +124,14 @@ export default class ConfigHall {
         const elPlaces = this.container.querySelectorAll('.js-place');
 
         if (elPlaces.length) {
-            const data = {};
+            const data = [];
             let number = 0;
 
             elPlaces.forEach(item => {
                 const row = item.parentElement.dataset.id;
                 const type = item.dataset.type;
 
-                if (!Object.hasOwn(data, row)) {
+                if (!data[row]) {
                     data[row] = [];
                     number = 0;
                 }
@@ -147,7 +158,10 @@ export default class ConfigHall {
 
         if (elConfigHall) {
             elConfigHall.innerHTML = html;
-            this.initEventItems();
+
+            const form = this.container.querySelector('form');
+
+            this.initEventItems(form);
         }
     }
 
@@ -157,5 +171,29 @@ export default class ConfigHall {
         const formData = new FormData(event.target);
 
         this.entity.getHall(formData.get('id'), 'config', this.onChangeHall.bind(this));
+    }
+
+    changeButtons() {
+        const hash = this.container.querySelector('.js-check-config');
+        const buttons = this.container.querySelectorAll('.conf-step__button');
+        const rows = this.container.querySelector('input[name="rows"]');
+        const places = this.container.querySelector('input[name="places"]');
+        let disabled = true;
+
+        if (hash.value !== md5(this.getDataPlaces())) {
+            disabled = false;
+        }
+
+        if (rows && rows.value !== rows.dataset.default) {
+            disabled = false;
+        }
+
+        if (places && places.value !== places.dataset.default) {
+            disabled = false;
+        }
+
+        if (buttons.length) {
+            buttons.forEach(item => item.disabled = disabled);
+        }
     }
 }
