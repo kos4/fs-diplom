@@ -14,6 +14,7 @@ export default class ConfigHall {
 
         if (form) {
             form.addEventListener('submit', this.sendFrom.bind(this));
+            form.addEventListener('reset', this.resetForm.bind(this));
         }
 
         if (listHalls.length) {
@@ -148,5 +149,13 @@ export default class ConfigHall {
             elConfigHall.innerHTML = html;
             this.initEventItems();
         }
+    }
+
+    resetForm(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+
+        this.entity.getHall(formData.get('id'), 'config', this.onChangeHall.bind(this));
     }
 }
