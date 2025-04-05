@@ -35,7 +35,8 @@ class HallController extends Controller
      */
     public function store(HallRequest $request)
     {
-        $hall = Hall::create($request->validated());
+        $request->mergeIfMissing(['rows' => 10, 'places' => 10]);
+        $hall = Hall::create($request->all());
 
         if ($hall->id) {
             return response()->json([
@@ -98,8 +99,12 @@ class HallController extends Controller
      */
     public function update(HallRequest $request, Hall $hall)
     {
-        if ($request->has('config')) {
-            $request->merge(['config' => json_decode($request->input('config'), true)]);
+        if ($hall->rows !== (int)$request->input('rows') || $hall->places !== (int)$request->input('places')) {
+            $request->merge(['config' => null]);
+        } else {
+            if ($request->has('config')) {
+                $request->merge(['config' => json_decode($request->input('config'), true)]);
+            }
         }
 
         $hall->update($request->all());

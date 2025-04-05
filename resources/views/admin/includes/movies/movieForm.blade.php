@@ -19,7 +19,7 @@
     </label>
     <label class="conf-step__label conf-step__label-fullsize" for="runtime">
         Продолжительность фильма (мин.)
-        <input class="conf-step__input" type="number" name="runtime" required value="{{ isset($movie) ? $movie->runtime : '' }}">
+        <input class="conf-step__input" type="number" name="runtime" required min="1" value="{{ isset($movie) ? $movie->runtime : '' }}">
     </label>
     <label class="conf-step__label conf-step__label-fullsize" for="description">
         Описание фильма
@@ -31,7 +31,7 @@
     </label>
     <label class="conf-step__label conf-step__label-fullsize" for="position">
         Позиция
-        <input class="conf-step__input" type="number" name="position" required value="{{ isset($movie) ? $movie->position : '' }}">
+        <input class="conf-step__input" type="number" name="position" value="{{ isset($movie) ? $movie->position : '' }}">
     </label>
     <div class="conf-step__buttons text-center">
         <input type="submit" value="{{ isset($movie) ? 'Обновить фильм' : 'Добавить фильм' }}" class="conf-step__button conf-step__button-accent">

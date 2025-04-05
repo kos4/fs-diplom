@@ -57,8 +57,20 @@ export default class Movie {
 
         const form = event.target;
         const formData = new FormData(form);
+        const errors = {};
 
-        this.entity.saveMovie(formData, this.onSaveMovie.bind(this));
+        if (formData.get('runtime') <= 0) {
+            errors.runtime = ['Продолжительность фильма должна быть больше 0.'];
+        }
+
+        if (Object.keys(errors).length) {
+            this.popup.render({
+                title: 'Ошибка',
+                body: errors,
+            });
+        } else {
+            this.entity.saveMovie(formData, this.onSaveMovie.bind(this));
+        }
     }
 
     onSaveMovie(response) {

@@ -58,19 +58,33 @@ export default class PricesHall {
             prices: [],
         }
         const pricesList = form.querySelectorAll('.conf-step__input');
+        const errors = {};
 
         if (pricesList.length) {
             pricesList.forEach(item => {
-                const parent = item.parentElement.parentElement;
-                data.prices.push({
-                    id: Number(parent.dataset.priceid),
-                    type_id: Number(parent.dataset.typeid),
-                    price: Number(item.value),
-                })
+                if (Number(item.value) <= 0) {
+                    errors.price = ['Цена должна быть больше 0.'];
+
+                    return false;
+                } else {
+                    const parent = item.parentElement.parentElement;
+                    data.prices.push({
+                        id: Number(parent.dataset.priceid),
+                        type_id: Number(parent.dataset.typeid),
+                        price: Number(item.value),
+                    });
+                }
             });
         }
 
-        this.entity.savePrices(data, this.onSendFrom.bind(this, pricesList));
+        if (Object.keys(errors).length) {
+            this.popup.render({
+                title: 'Ошибка',
+                body: errors,
+            });
+        } else {
+            this.entity.savePrices(data, this.onSendFrom.bind(this, pricesList));
+        }
     }
 
     onSendFrom(pricesList, response) {

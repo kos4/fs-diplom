@@ -47,7 +47,16 @@ export default class Popup {
 
     markup(data) {
         const title = data.title ? data.title : "Сообщение";
-        const imageUrl = new URL('./assets/img/close.png', import.meta.url).href
+        const imageUrl = new URL('./assets/img/close.png', import.meta.url).href;
+        let body = '';
+
+        if (data.body instanceof Object) {
+            for (let item in data.body) {
+                body += data.body[item].join('<br>') + '<br>';
+            }
+        } else {
+            body = data.body;
+        }
 
         return `
             <div class="popup active">
@@ -62,7 +71,7 @@ export default class Popup {
                             </h2>
                         </div>
                         <div class="popup__wrapper">
-                            ${data.body}
+                            ${body}
                         </div>
                     </div>
                 </div>

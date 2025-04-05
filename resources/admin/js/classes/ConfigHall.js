@@ -70,11 +70,27 @@ export default class ConfigHall {
         event.preventDefault();
 
         const formData = new FormData(event.target);
+        const errors = {};
 
-        formData.append('config', this.getDataPlaces());
-        formData.append('getConfig', true);
+        if (formData.get('rows') <= 0) {
+            errors.rows = ['Количество рядов должно быть больше 0.'];
+        }
 
-        this.entity.saveHall(formData, this.onSendFrom.bind(this));
+        if (formData.get('places') <= 0) {
+            errors.rows = ['Количество мест должно быть больше 0.'];
+        }
+
+        if (Object.keys(errors).length) {
+            this.popup.render({
+                title: 'Ошибка',
+                body: errors,
+            });
+        } else {
+            formData.append('config', this.getDataPlaces());
+            formData.append('getConfig', true);
+
+            this.entity.saveHall(formData, this.onSendFrom.bind(this));
+        }
     }
 
     onSendFrom(response) {
