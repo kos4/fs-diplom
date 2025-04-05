@@ -69,6 +69,8 @@ class PriceController extends Controller
 
         return response()->json([
             'success' => true,
+            'id' => $price->id,
+            'price' => $price->price,
         ]);
     }
 

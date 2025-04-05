@@ -1,5 +1,6 @@
 import Entity from "./Entity.js";
 import Popup from "../components/popup/Popup.js";
+import md5 from "blueimp-md5";
 
 export default class PricesHall {
     constructor(container) {
@@ -20,6 +21,16 @@ export default class PricesHall {
 
         if (form) {
             form.addEventListener('submit', this.sendFrom.bind(this));
+        }
+
+        this.initEventItems();
+    }
+
+    initEventItems() {
+        const pricesList = this.container.querySelectorAll('.conf-step__input');
+
+        if (pricesList.length) {
+            pricesList.forEach(item => item.addEventListener('change', this.changeButtons.bind(this)));
         }
     }
 
@@ -46,6 +57,7 @@ export default class PricesHall {
 
         if (elPricesHall) {
             elPricesHall.innerHTML = html;
+            this.initEventItems();
         }
     }
 
@@ -98,13 +110,41 @@ export default class PricesHall {
 
                         return false;
                     }
+
+                    if (Number(parent.dataset.priceid) === response.id) {
+                        item.dataset.default = response.price;
+
+                        return false;
+                    }
                 });
             }
+
+            this.changeButtons();
         } else {
             this.popup.render({
                 title: 'Ошибка',
                 body: response.message,
             });
+        }
+    }
+
+    changeButtons() {
+        const buttons = this.container.querySelectorAll('.conf-step__button');
+        const pricesList = this.container.querySelectorAll('.conf-step__input');
+        let disabled = true;
+
+        if (pricesList.length) {
+            pricesList.forEach(item => {
+                if (item.value !== item.dataset.default) {
+                    disabled = false;
+
+                    return false;
+                }
+            });
+        }
+
+        if (buttons.length) {
+            buttons.forEach(item => item.disabled = disabled);
         }
     }
 }

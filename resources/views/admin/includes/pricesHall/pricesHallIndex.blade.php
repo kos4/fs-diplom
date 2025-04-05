@@ -21,8 +21,8 @@
                 </div>
 
                 <fieldset class="conf-step__buttons text-center">
-                    <button class="conf-step__button conf-step__button-regular" type="reset">Отмена</button>
-                    <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent">
+                    <button class="conf-step__button conf-step__button-regular" type="reset" disabled>Отмена</button>
+                    <input type="submit" value="Сохранить" class="conf-step__button conf-step__button-accent" disabled>
                 </fieldset>
             </form>
         @endif
