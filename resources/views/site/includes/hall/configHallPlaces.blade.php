@@ -1,7 +1,7 @@
 <div class="buying-scheme__wrapper js-places" data-movie-session="{{ $movieSession->id }}">
     @if(is_array($hall->config))
         @foreach($hall->config as $rowNumber => $row)
-            <div class="buying-scheme__row" data-row-number="{{ $loop->index }}">
+            <div class="buying-scheme__row" data-row-number="{{ $rowNumber }}">
                 @if(is_array($row))
                     @foreach($row as $place)
                         @php
