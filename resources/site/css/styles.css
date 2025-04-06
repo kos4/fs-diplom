@@ -177,6 +177,13 @@ body {
   font-size: 1.5rem;
 }
 
+.movie .movie-seances__hall .movie-seances__time-disable {
+    background-color: #aaaaaa;
+
+    pointer-events: none;
+    cursor: default;
+}
+
 /* ~~~~~~~~~~~~ Кинозал ~~~~~~~~~~~~ */
 .acceptin-button {
   display: block;

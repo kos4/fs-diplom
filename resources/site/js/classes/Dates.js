@@ -1,4 +1,5 @@
 import Entity from "./Entity.js";
+import moment from "moment-timezone";
 
 export default class Dates {
     constructor(container) {
@@ -13,6 +14,10 @@ export default class Dates {
 
         if (btnDates.length) {
             btnDates.forEach(item => {
+                if (item.classList.contains('page-nav__day_chosen')) {
+                    this.setDisableMovieSessions(item.dataset.date);
+                }
+
                 item.addEventListener('click', this.clickDate.bind(this));
             });
         }
@@ -32,6 +37,8 @@ export default class Dates {
         const chosen = this.container.querySelectorAll('.page-nav__day_chosen');
         const link = event.target.closest('a');
         const date = link.dataset.date;
+
+        this.setDisableMovieSessions(date);
 
         if (chosen.length) {
             chosen.forEach(item => {
@@ -62,6 +69,30 @@ export default class Dates {
         if (response.success) {
             this.container.innerHTML = response.list;
             this.init();
+        }
+    }
+
+    setDisableMovieSessions(date) {
+        const currentDate = moment();
+
+        if (currentDate.format('YYYY-MM-DD') === date) {
+            const movieSessions = document.querySelectorAll('.movie-seances__time');
+
+            if (movieSessions.length) {
+                movieSessions.forEach(item => {
+                    if (currentDate > moment(date + ' ' + item.text)) {
+                        item.classList.add('movie-seances__time-disable');
+                    }
+                });
+            }
+        } else {
+            const movieSessions = document.querySelectorAll('.movie-seances__time-disable');
+
+            if (movieSessions.length) {
+                movieSessions.forEach(item => {
+                    item.classList.remove('movie-seances__time-disable');
+                });
+            }
         }
     }
 }
