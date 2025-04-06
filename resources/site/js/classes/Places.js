@@ -17,27 +17,59 @@ export default class Places {
     takePlace(event) {
         const place = event.target;
 
-        if (place.classList.contains('buying-scheme__chair_taken')) {
+        if (place.dataset.taken === '1') {
             return false;
         }
 
         let order = localStorage.order;
 
-        if (order) {
+        if (place.classList.contains('buying-scheme__chair_taken')) {
             order = JSON.parse(order);
-        } else {
-            order = {
-                movieSession: this.container.dataset.movieSession,
-                items: [],
-            };
-        }
 
-        order.items.push({
-            row: place.parentElement.dataset.rowNumber,
-            number: place.dataset.number,
-            type: place.dataset.type,
-        });
-        localStorage.order = JSON.stringify(order);
-        place.className = 'buying-scheme__chair buying-scheme__chair_taken js-place';
+            if (order.items.length) {
+                let type = undefined;
+
+                order.items.forEach((item, index) => {
+                    if (item.row === place.parentElement.dataset.rowNumber && item.number === place.dataset.number) {
+                        type = place.dataset.type;
+
+                        if (order.items.length > 1) {
+                            order.items = order.items.filter((value, key) => key !== index);
+                        } else {
+                            order.items = null;
+                        }
+
+                        return false;
+                    }
+                });
+
+                if (type) {
+                    if (!order.items) {
+                        localStorage.removeItem('order');
+                    } else {
+                        localStorage.order = JSON.stringify(order);
+                    }
+
+                    place.className = 'buying-scheme__chair buying-scheme__chair_' + type + ' js-place';
+                }
+            }
+        } else {
+            if (order) {
+                order = JSON.parse(order);
+            } else {
+                order = {
+                    movieSession: this.container.dataset.movieSession,
+                    items: [],
+                };
+            }
+
+            order.items.push({
+                row: place.parentElement.dataset.rowNumber,
+                number: place.dataset.number,
+                type: place.dataset.type,
+            });
+            localStorage.order = JSON.stringify(order);
+            place.className = 'buying-scheme__chair buying-scheme__chair_taken js-place';
+        }
     }
 }
