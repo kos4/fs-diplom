@@ -8,8 +8,8 @@
 <div class="conf-step__hall">
     <div class="conf-step__hall-wrapper">
         @if(is_array($hall->config))
-            @foreach($hall->config as $row)
-                <div class="conf-step__row" data-id="{{ $loop->index }}">
+            @foreach($hall->config as $key => $row)
+                <div class="conf-step__row" data-id="{{ $key }}">
                     @foreach($row as $place)
                         <span class="conf-step__chair conf-step__chair_{{ $place['type'] }} js-place" data-id="{{ $place['id'] }}" data-type="{{ $place['type'] }}"></span>
                     @endforeach

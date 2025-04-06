@@ -124,7 +124,7 @@ export default class ConfigHall {
         const elPlaces = this.container.querySelectorAll('.js-place');
 
         if (elPlaces.length) {
-            const data = [];
+            const data = {};
             let number = 0;
 
             elPlaces.forEach(item => {
@@ -132,7 +132,7 @@ export default class ConfigHall {
                 const type = item.dataset.type;
 
                 if (!data[row]) {
-                    data[row] = [];
+                    data[row] = {};
                     number = 0;
                 }
 
@@ -140,11 +140,11 @@ export default class ConfigHall {
                     number++;
                 }
 
-                data[row].push({
+                data[row][item.dataset.id] = {
                     id: item.dataset.id,
                     number: type === 'disabled' ? 0 : number,
                     type,
-                });
+                };
             });
 
             return JSON.stringify(data);
